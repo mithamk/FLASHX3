@@ -1,0 +1,287 @@
+<!--
+    Project Name: FLASHX3
+    Contributors:
+        - Meghana Saisri Bisa
+        - Mitha M K
+        - Mrunal Manjunath Kudtarkar
+-->
+<html>
+<head>
+    <title>DSA MCQs</title>
+    <style>
+        img {
+            height: 95px;
+            width: 95px;
+        }
+
+        #header{
+            background-color: #07182b;
+            padding: 12px;
+            width: 1300px;
+            height: 90px;
+            top: 0px;
+            left: 0px;
+            position: absolute;
+        }
+
+        body{
+            background-image: url("bg-img.png");
+        }
+
+        #header h2{
+            top: 25px;
+            position: absolute;
+            margin-left: 150px;
+            font-family: Calibri;
+            color: white;
+        }
+
+        .card
+        {
+            top: 125px;
+            left: 275px;
+            border-radius: 5%;
+            width: 700px;
+            height: 450px;
+            background-color: aliceblue;
+            border-color: black;
+            font-family: Calibri;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        p{
+            font-size: 20px;
+        }
+
+        .resultMSG
+        {
+            margin-left: 0px;
+            text-align: center;
+        }
+
+        button{
+            width: 100px;
+            height: 50px;
+            border-radius: 5%;
+            top: 575px;
+            position: absolute;
+        }
+
+        .visible {
+            visibility: visible; 
+        }
+
+        .wrong{
+            left: 10px;
+            top: 325px;
+            position: absolute;
+        }
+
+        input[type="radio"] {
+            transform: scale(1.5); 
+            margin: 10px; 
+            cursor: pointer; 
+        }
+
+        #card6 {
+            text-align:center;
+        }
+
+        #confetti{
+            top: 125px;
+            left: 100px;
+            width: 1000px;
+            height: 600px;
+            z-index: 100;
+            position: absolute;
+            display: none;
+        }
+        
+        #score{
+            width: 100px;
+            height: 100px;
+            bottom:0px;
+            right: 80px;
+            display: none;
+            background-color: color;
+            animation: moveUp 1.5s forwards;
+            position: absolute;
+        }
+
+        @keyframes moveUp {
+            0% { bottom: 0; }
+            100% { bottom: 400px; } 
+        }
+    </style>
+    <script src = "jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <script>
+        $(document).ready(function() {
+            //add the messages when the wrong option is selected. With the correct answer and explanation
+            const wrongMessages = [
+                "<b>D: </b>Merge sort is preferred for linked lists because - its O(n log n) time complexity > Insertion sort's O(n²) in the worst case.", 
+                "<b>D: </b>In the worst case, searching a singly linked list of length 𝑛 requires 𝑛 comparisons, as the algorithm must traverse the entire list to determine if the element is absent.", 
+                "<b>B: </b>All of the Above.", 
+                "<b>A: </b>A tree is not a linear structure the data items are not arranged in a sequential order",
+                "<b>C: </b>In-order traversal of a BST gives elements in increasing order."  
+            ];
+
+            var score = 0;
+
+            $("input[name='options']").click(function() {
+                var selectedValue = $("input[name='options']:checked").val();
+                var currentResultMSG = $(this).closest(".card").find(".resultMSG");
+                $("p").css("background-color", "");
+                $("p").css("border", "");
+                        
+                currentResultMSG.empty(); 
+
+                let currentCardIndex = $(".card").index($(this).closest(".card"));
+
+                if(selectedValue === "right") 
+                {
+                    $(this).parent().css({"background-color": "lightgreen", "width": "650px", "height":"30px","border":"3px solid darkgreen"});
+                    currentResultMSG.append("<p>You are right!</p>");
+                    $(`#card${currentCardIndex + 1}`).css("background-color", "#c9fdd7");
+                    score = score + 1;
+                    if(score >= 5)
+                    {
+                        score = 5;
+                    }
+                    $("#score").show();
+                    setTimeout(function(){
+                        $("#score").hide();
+                    },1500);
+                } 
+                else if(selectedValue === "wrong") 
+                {
+                    $(this).parent().css({"background-color": "#FFCCCB", "width": "650px", "height":"30px","border":"3px solid red"});
+                    $("input[name='options'][value='right']").parent().css({"background-color": "lightgreen", "width": "650px", "height":"30px","border":"3px solid darkgreen"});
+                    currentResultMSG.append(`<p style="background-color: #FFCCCB; border: black; border-style: solid; color: black; left: 0px; position: absolute">${wrongMessages[currentCardIndex]}</p>`);
+                    $(`#card${currentCardIndex + 1}`).css("background-color", "#DA614E");
+                }
+            });
+
+            let currentDivIndex = 0;
+            const divs = $(".card");
+            const totalDivs = divs.length;
+            divs.eq(0).css("visibility", "visible");
+
+            function showDiv(index) {
+                divs.removeClass("visible").css("visibility", "hidden"); 
+                divs.eq(index).addClass("visible").css("visibility", "visible");
+
+                        
+                $("input[name='options']").prop("checked", false); 
+                $("p").css("background-color", ""); 
+                $("p").css("border", "");
+                divs.eq(index).find(".resultMSG").empty(); 
+            }
+
+            $("#nextBtn").click(function() {
+                currentDivIndex = (currentDivIndex + 1) % totalDivs; 
+                showDiv(currentDivIndex);
+
+                if(currentDivIndex == 5)
+                {
+                    if(score > 2)
+                    {
+                        $("#card6").html('<br><br><span style="font-size: 150px;"">🎉</span><br><br>' +
+                                        '<span style="font-size: 30px;">Score: ' + score + '/5</span><br>' +
+                                        '<span style="font-size: 30px;">Well Done!</span>');
+                        $("#confetti").show();
+                        setTimeout(function(){
+                            $("#confetti").hide();
+                        },4000);
+                    }
+                    else
+                    {
+                        $("#card6").html('<br><br><span style="font-size: 150px;">😞</span><br><br>' +
+                                        '<span style="font-size: 30px;">Score: ' + score + '/5</span><br>' +
+                                        '<span style="font-size: 30px;">Can do better!</span>');
+                    }
+                }
+            });
+
+            $("#prevBtn").click(function() {
+                currentDivIndex = (currentDivIndex - 1 + totalDivs) % totalDivs; 
+                showDiv(currentDivIndex);
+            });
+
+            $("#homepage").click(function() {
+                window.location.href = 'flashcard-type-directing-page.html';
+            });
+        });
+    </script>
+    <div id="header">
+        <img src="LOGO.jpg">
+        <h2>Data Structures & Algorithms</h2>
+    </div>
+    <img id = "confetti" src = "confetti.gif" alt = "Well Done!" />
+    <img id = "score" src = "100.png" alt = "+100" />
+    <div id = "card1" class = "card visible">
+        <h2 style = "margin-top: 60px; margin-left: 30px;">1. Which of the following sorting algorithms can be used to sort a random linked list with minimum time complexity?</h2>
+        <div id = "q-options" style = "margin-left: 30px;">
+        <p><input type = "radio" name = "options" value = "wrong"/>A. Insertion Sort</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>B. Quick Sort</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>C. Heap Sort</p>
+        <p><input type = "radio" name = "options" value = "right"/>D. Merge Sort</p>
+        <div class = "resultMSG"></div>
+        </div>
+    </div>
+
+    <div id = "card2" class = "card">
+        <h2 style = "margin-top: 60px; margin-left: 30px;">2. In the worst case, the number of comparisons needed to search a singly linked list of length n for a given element is</h2>
+        <div id = "q-options" style = "margin-left: 30px;">
+        <p><input type = "radio" name = "options" value = "wrong"/>A. log(2*n)</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>B. n/2</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>C. log(2*n) -1</p>
+        <p><input type = "radio" name = "options" value = "right"/>D. n</p>
+        <div class = "resultMSG"></div>
+        </div>
+    </div>
+
+    <div id = "card3" class = "card">
+        <h2 style = "margin-top: 60px; margin-left: 30px;">3. Which one of the following is an application of Stack Data Structure?</h2>
+        <div id = "q-options" style = "margin-left: 30px;">
+        <p><input type = "radio" name = "options" value = "wrong"/>A. Managing function calls</p>
+        <p><input type = "radio" name = "options" value = "right"/>B. All of the above</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>C. Arithmetic expression evaluation</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>D. The stock span problem</p>
+        <div class = "resultMSG"></div>
+        </div>
+    </div>
+
+    <div id = "card4" class = "card">
+        <h2 style = "margin-top: 60px; margin-left: 30px;">4. Which of the following is not a linear data structure?</h2>
+        <div id = "q-options" style = "margin-left: 30px;">
+        <p><input type = "radio" name = "options" value = "right"/>A. Tree</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>B. Array</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>C. LinkedList</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>D. Stack</p>
+        <div class = "resultMSG"></div>
+        </div>
+    </div>
+
+    <div id = "card5" class = "card">
+        <h2 style = "margin-top: 60px; margin-left: 30px;">5. Insert the numbers 7, 5, 1, 8, 3, 6, 0, 9, 4, 2 into an empty binary search tree. What is the in-order traversal of the tree?</h2>
+        <div id = "q-options" style = "margin-left: 30px;">
+        <p><input type = "radio" name = "options" value = "wrong"/>A. 7 5 1 0 3 2 4 6 8 9</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>B. 0 2 4 3 1 6 5 9 8 7</p>
+        <p><input type = "radio" name = "options" value = "right"/>C. 0 1 2 3 4 5 6 7 8 9</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>D. 9 8 6 4 2 3 0 1 5 7</p>
+        <div class = "resultMSG"></div>
+        </div>
+    </div>
+
+    <div id = "card6" class = "card">
+        <div class = "score"></div>
+    </div>
+
+    <button id = "nextBtn" style = "left: 675px; top: 590px">→</button>
+    <button id = "prevBtn" style = "left:475px; top: 590px">←</button>
+    <button id = "homepage" style = "right: 0px; top: 115px; font-family: Verdana; font-size: 13px; width: 100px">⏪ Home 🏠</button>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!--
+    Project Name: FLASHX3
+    Contributors:
+        - Meghana Saisri Bisa
+        - Mitha M K
+        - Mrunal Manjunath Kudtarkar
+-->
+<html>
+<head>
+    <title>C Programming MCQs</title>
+    <style>
+        img {
+            height: 95px;
+            width: 95px;
+        }
+
+        #header{
+            background-color: #07182b;
+            padding: 12px;
+            width: 1300px;
+            height: 90px;
+            top: 0px;
+            left: 0px;
+            position: absolute;
+        }
+
+        body{
+            background-image: url("bg-img.png");
+        }
+
+        #header h2{
+            top: 25px;
+            position: absolute;
+            margin-left: 150px;
+            font-family: Calibri;
+            color: white;
+        }
+
+        .card
+        {
+            top: 125px;
+            left: 275px;
+            border-radius: 5%;
+            width: 700px;
+            height: 450px;
+            background-color: aliceblue;
+            border-color: black;
+            font-family: Calibri;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        p{
+            font-size: 20px;
+        }
+
+        .resultMSG
+        {
+            margin-left: 0px;
+            text-align: center;
+        }
+
+        button{
+            width: 100px;
+            height: 50px;
+            border-radius: 5%;
+            top: 575px;
+            position: absolute;
+        }
+
+        .visible {
+            visibility: visible; 
+        }
+
+        .wrong{
+            left: 10px;
+            top: 325px;
+            position: absolute;
+        }
+
+        input[type="radio"] {
+            transform: scale(1.5); 
+            margin: 10px; 
+            cursor: pointer; 
+        }
+
+        #card6 {
+            text-align:center;
+        }
+
+        #confetti{
+            top: 125px;
+            left: 100px;
+            width: 1000px;
+            height: 600px;
+            z-index: 100;
+            position: absolute;
+            display: none;
+        }
+        
+        #score{
+            width: 100px;
+            height: 100px;
+            bottom:0px;
+            right: 80px;
+            display: none;
+            background-color: color;
+            animation: moveUp 1.5s forwards;
+            position: absolute;
+        }
+
+        @keyframes moveUp {
+            0% { bottom: 0; }
+            100% { bottom: 400px; } 
+        }
+    </style>
+    <script src = "jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <script>
+        $(document).ready(function() {
+            //add the messages when the wrong option is selected. With the correct answer and explanation
+            const wrongMessages = [
+                "<b>D: </b>Since only underscore and no other special character is allowed in a variable name, it results in an error.", 
+                "<b>B: </b>Space, comma and $ cannot be used in a variable name.", 
+                "<b>C: </b>None.", 
+                "<b>A: </b>The C-preprocessors are specified with # symbol.", 
+                "<b>C: </b>None." 
+            ];
+
+            var score = 0;
+
+            $("input[name='options']").click(function() {
+                var selectedValue = $("input[name='options']:checked").val();
+                var currentResultMSG = $(this).closest(".card").find(".resultMSG");
+                $("p").css("background-color", "");
+                $("p").css("border", "");
+                        
+                currentResultMSG.empty(); 
+
+                let currentCardIndex = $(".card").index($(this).closest(".card"));
+
+                if(selectedValue === "right") 
+                {
+                    $(this).parent().css({"background-color": "lightgreen", "width": "650px", "height":"30px","border":"3px solid darkgreen"});
+                    currentResultMSG.append("<p>You are right!</p>");
+                    $(`#card${currentCardIndex + 1}`).css("background-color", "#c9fdd7");
+                    score = score + 1;
+                    if(score >= 5)
+                    {
+                        score = 5;
+                    }
+                    $("#score").show();
+                    setTimeout(function(){
+                        $("#score").hide();
+                    },1500);
+                } 
+                else if(selectedValue === "wrong") 
+                {
+                    $(this).parent().css({"background-color": "#FFCCCB", "width": "650px", "height":"30px","border":"3px solid red"});
+                    $("input[name='options'][value='right']").parent().css({"background-color": "lightgreen", "width": "650px", "height":"30px","border":"3px solid darkgreen"});
+                    currentResultMSG.append(`<p style="background-color: #FFCCCB; border: black; border-style: solid; color: black; left: 0px; position: absolute">${wrongMessages[currentCardIndex]}</p>`);
+                    $(`#card${currentCardIndex + 1}`).css("background-color", "#DA614E");
+                }
+            });
+
+            let currentDivIndex = 0;
+            const divs = $(".card");
+            const totalDivs = divs.length;
+            divs.eq(0).css("visibility", "visible");
+
+            function showDiv(index) {
+                divs.removeClass("visible").css("visibility", "hidden"); 
+                divs.eq(index).addClass("visible").css("visibility", "visible");
+
+                        
+                $("input[name='options']").prop("checked", false); 
+                $("p").css("background-color", ""); 
+                $("p").css("border", "");
+                divs.eq(index).find(".resultMSG").empty(); 
+            }
+
+            $("#nextBtn").click(function() {
+                currentDivIndex = (currentDivIndex + 1) % totalDivs; 
+                showDiv(currentDivIndex);
+
+                if(currentDivIndex == 5)
+                {
+                    if(score > 2)
+                    {
+                        $("#card6").html('<br><br><span style="font-size: 150px;"">🎉</span><br><br>' +
+                                        '<span style="font-size: 30px;">Score: ' + score + '/5</span><br>' +
+                                        '<span style="font-size: 30px;">Well Done!</span>');
+                        $("#confetti").show();
+                        setTimeout(function(){
+                            $("#confetti").hide();
+                        },4000);
+                    }
+                    else
+                    {
+                        $("#card6").html('<br><br><span style="font-size: 150px;">😞</span><br><br>' +
+                                        '<span style="font-size: 30px;">Score: ' + score + '/5</span><br>' +
+                                        '<span style="font-size: 30px;">Can do better!</span>');
+                    }
+                }
+            });
+
+            $("#prevBtn").click(function() {
+                currentDivIndex = (currentDivIndex - 1 + totalDivs) % totalDivs; 
+                showDiv(currentDivIndex);
+            });
+
+            $("#homepage").click(function() {
+                window.location.href = 'flashcard-type-directing-page.html';
+            });
+        });
+    </script>
+    <div id="header">
+        <img src="LOGO.jpg">
+        <h2>C Programming</h2>
+    </div>
+    <img id = "confetti" src = "confetti.gif" alt = "Well Done!" />
+    <img id = "score" src = "100.png" alt = "+100" />
+    <div id = "card1" class = "card visible">
+        <h2 style = "margin-top: 60px; margin-left: 30px;">1.Which of the following is not a valid C variable name?</h2>
+        <div id = "q-options" style = "margin-left: 30px;">
+        <p><input type = "radio" name = "options" value = "wrong"/>A. int number; </p>
+        <p><input type = "radio" name = "options" value = "wrong"/>B. float rate; </p>
+        <p><input type = "radio" name = "options" value = "wrong"/>C. int variable_count;</p>
+        <p><input type = "radio" name = "options" value = "right"/>D. int $main; </p>
+        <div class = "resultMSG"></div>
+        </div>
+    </div>
+
+    <div id = "card2" class = "card">
+        <h2 style = "margin-top: 60px; margin-left: 30px;">2. Which is valid C expression? </h2>
+        <div id = "q-options" style = "margin-left: 30px;">
+        <p><input type = "radio" name = "options" value = "wrong"/>A. int my_num = 100,000; </p>
+        <p><input type = "radio" name = "options" value = "right"/>B. int my_num = 100000; </p>
+        <p><input type = "radio" name = "options" value = "wrong"/>C.  int my num = 1000;</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>D. int $my_num = 10000;</p>
+        <div class = "resultMSG"></div>
+        </div>
+    </div>
+
+    <div id = "card3" class = "card">
+        <h2 style = "margin-top: 60px; margin-left: 30px;">3. What is short int in C programming?</h2>
+        <div id = "q-options" style = "margin-left: 30px;">
+        <p><input type = "radio" name = "options" value = "wrong"/>A. The basic data type of C</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>B. Qualifier</p>
+        <p><input type = "radio" name = "options" value = "right"/>C. Short is the qualifier and int is the basic data type</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>D. All of the mentioned</p>
+        <div class = "resultMSG"></div>
+        </div>
+    </div>
+
+    <div id = "card4" class = "card">
+        <h2 style = "margin-top: 60px; margin-left: 30px;">4. The C-preprocessors are specified with _________ symbol.</h2>
+        <div id = "q-options" style = "margin-left: 30px;">
+        <p><input type = "radio" name = "options" value = "right"/>A. #</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>B. $</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>C. ""</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>D. &</p>
+        <div class = "resultMSG"></div>
+        </div>
+    </div>
+
+    <div id = "card5" class = "card">
+        <h2 style = "margin-top: 60px; margin-left: 30px;">5. Which of the following sequences are unaccepted in C language?</h2>
+        <div id = "q-options" style = "margin-left: 30px;">
+        <p><input type = "radio" name = "options" value = "wrong"/>A. #if
+            #else
+            #endif</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>B. #if
+            #elif
+            #endif</p>
+        <p><input type = "radio" name = "options" value = "right"/>C. #if
+            #if
+            #endif</p>
+        <p><input type = "radio" name = "options" value = "wrong"/>D. #if
+            #undef
+            #endif</p>
+        <div class = "resultMSG"></div>
+        </div>
+    </div>
+
+    <div id = "card6" class = "card">
+        <div class = "score"></div>
+    </div>
+
+    <button id = "nextBtn" style = "left: 675px; top: 590px">→</button>
+    <button id = "prevBtn" style = "left:475px; top: 590px">←</button>
+    <button id = "homepage" style = "right: 0px; top: 115px; font-family: Verdana; font-size: 13px; width: 100px">⏪ Home 🏠</button>
+</body>
+</html>

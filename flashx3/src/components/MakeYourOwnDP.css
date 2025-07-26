@@ -1,0 +1,115 @@
+/*
+    Project Name: FLASHX3
+    Contributors:
+        - Meghana Saisri Bisa
+        - Mitha M K
+        - Mrunal Manjunath Kudtarkar
+*/
+#header {
+    background-color: #07182b;
+    padding: 12px;
+    width: 1300px;
+    height: 90px;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+  }
+  
+  img {
+    height: 95px;
+    width: 95px;
+  }
+  
+  #header h2 {
+    top: 25px;
+    position: absolute;
+    margin-left: 150px;
+    font-family: Calibri;
+    color: white;
+  }
+  
+  #homepage button {
+    right: 100px;
+    top: 114px;
+    font-family: Verdana;
+    font-size: 13px;
+    width: 100px;
+    height: 45px;
+    border: 2px solid black;
+    position: absolute;
+  }
+  
+  #exitpage button {
+    right: 0px;
+    top: 114px;
+    font-family: Verdana;
+    font-size: 13px;
+    width: 100px;
+    height: 45px;
+    border: 2px solid black;
+    position: absolute;
+  }
+  
+  #bp, #qa, #mcq {
+    width: 18vw;
+    padding: 20px;
+    margin: 200px 0;
+    background-color: #daebee;
+    font-size: 20px;
+    color: #1b5a7a;
+    position: absolute;
+    border-radius: 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+  
+  
+  #bp {
+    top: 2px;
+    left: 100px;
+  }
+  
+  
+  #qa {
+    top: 85px;
+    left: 100px;
+  }
+  
+  
+  #mcq {
+    top: 170px;
+    left: 100px;
+  }
+  
+  #bullet-points, #QA, #MCQ
+  {
+    width: 430px;
+    height: 250px;
+    top: 195px;
+    right: 300px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 5px;
+    animation: fadeIn 3s;
+    z-index: 100;
+    position: absolute;
+  }
+  
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  #ok button
+  {
+    bottom: 150px;
+    left: 160px;
+    font-family: Verdana;
+    font-size: 13px;
+    width: 100px;
+    height: 45px;
+    background-color: #daebee;
+    color: black;
+    border: 2px solid black;
+    position: absolute;
+  }
+  
