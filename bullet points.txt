@@ -1,0 +1,5 @@
+Protects passwords from exposure: Hashing makes stored passwords unreadable.
+Follows security standards: It aligns with best practices for handling sensitive data.
+Prevents plain text leaks: Reduces the risk of compromised passwords.
+Makes attacks harder: Adds difficulty for attackers trying to access actual passwords.
+Builds user confidence: Shows users their data is handled securely.
